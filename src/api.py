@@ -4,7 +4,7 @@ import requests
 import json
 from pandas import json_normalize
 from pandas import concat
-from pandas.core.interchange.dataframe_protocol import DataFrame
+from pandas import DataFrame
 
 from api_auth import token
 
@@ -20,6 +20,7 @@ courts_ep = root + 'courts/'
 parties_ep = root + 'parties/'
 opinions_ep =  root + 'opinions/'
 tags_ep = root + 'tags/'
+people_ep = root + 'people/'
 
 def query_options(endpoint, parameters=None):
     #Info on OPTIONS requests: https://reqbin.com/req/python/jecm0tqu/options-request-example
@@ -30,39 +31,26 @@ def query_options(endpoint, parameters=None):
     #filtered_response = jq  jq_filter response_dict
     return results
 
-def query_api(endpoint, parameters) -> pd.DataFrame:
+def query_api(endpoint, parameters=None) -> pd.DataFrame:
     #parameters is dict object, where key is field and value is condition
     try:
         response = requests.get(endpoint, headers={'Authorization': f"Token {token}"}, params=parameters)
         response_dict = json.loads(response.text)
-        results_df = json_normalize(response_dict['results'])
+        if 'results' in response_dict: #multi-object return
+            results_df = json_normalize(response_dict['results'])
 
-        next_page_endpoint = response_dict['next']
-
-        while next_page_endpoint:
-            response = requests.get(next_page_endpoint, headers={'Authorization': f"Token {token}"})
-            response_dict = json.loads(response.text)
-            results_df = concat([results_df, json_normalize(response_dict['results'])], ignore_index=True)
             next_page_endpoint = response_dict['next']
+
+            while next_page_endpoint:
+                response = requests.get(next_page_endpoint, headers={'Authorization': f"Token {token}"})
+                response_dict = json.loads(response.text)
+                results_df = concat([results_df, json_normalize(response_dict['results'])], ignore_index=True)
+                next_page_endpoint = response_dict['next']
+        else: #dealing with single instance/object
+            results_df = pd.DataFrame.from_dict(response_dict, orient='index').T
     except Exception as e:
         print(e)
         return DataFrame()
 
     return results_df
 
-
-
-if __name__=='__main__':
-    #Get dockets without federal jurisdictions: curl "https://www.courtlistener.com/api/rest/v4/dockets/?court__jurisdiction!=F"
-    #Related Filters: can join filters between APIs
-    trump_eo_dockets = query_api(endpoint=tags_ep, parameters={'name':'trump-executive-authority'})
-    docket_ids = trump_eo_dockets['dockets'][0]
-    dockets = []
-    for docket_id in docket_ids:
-        res = query_api(endpoint=dockets_ep, parameters={"id": docket_id})
-        dockets.append(res)
-    dockets_df = concat(dockets, ignore_index=True)
-    #TODO: get state court case abbreviation, change below to read from clusters column in dockets_df
-    #clusters = [query_api(endpoint=cluster_ep, parameters={'docket__docket_number': f"{docket_num}"}) for docket_num in dockets_df['docket_number']]
-    #dockets = [query_api(dockets, {"id": f"{docket_id}"}) for docket_id in docket_ids]
-    query_options(opinions_ep)
