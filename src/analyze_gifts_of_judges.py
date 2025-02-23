@@ -1,6 +1,4 @@
 #https://www.courtlistener.com/help/api/rest/financial-disclosures/
-from api import query_api, query_options, people_ep
-import pandas as pd
 
 #Current Supreme Court justices
 #https://www.supremecourt.gov/about/biographies.aspx

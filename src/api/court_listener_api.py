@@ -6,7 +6,7 @@ from pandas import json_normalize
 from pandas import concat
 from pandas import DataFrame
 
-from api_auth import token
+from court_listener_api_auth import token
 
 #Options HTTP request
 #curl -v   -X OPTIONS   --header 'Authorization: Token ..'   "https://www.courtlistener.com/api/rest/v4/dockets/" | jq '.filters'
