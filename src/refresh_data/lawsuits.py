@@ -27,16 +27,6 @@ def update_data():
     dockets_df.to_csv('../data/raw/dockets.csv')
     courts_df.to_csv('../data/raw/courts.csv')
 
-    save_docket_resource_link()
-
-def save_docket_resource_link():
-    dockets = pd.read_csv('../../data/raw/dockets.csv')
-    docket_entries = dockets[['id', 'absolute_url', 'case_name']]
-    docket_entries['absolute_url'] = 'https://www.courtlistener.com' + docket_entries['absolute_url']
-    docket_entries = docket_entries.rename(columns={'id': 'docket_id'})
-    docket_entries.to_csv('../data/raw/docket_entry_info.csv')
-
-
 
 if __name__=='__main__':
     update_data()
