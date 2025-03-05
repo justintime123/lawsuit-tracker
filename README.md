@@ -6,7 +6,8 @@
 
 ## Lo-fi website mockup
 
-![Website Lo-fi Mockup](https://github.com/user-attachments/assets/ca01c21d-1bce-400b-a4e1-0e6c1234f79d)
+![Website Lo-fi Mockup (1)](https://github.com/user-attachments/assets/ef13b7d8-4797-43f5-ad09-6c84c7710d7a)
+
 
 ## Data
 ### APIs
