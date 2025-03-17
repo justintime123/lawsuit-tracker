@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-**Goal:** Capture and summarize the battleground of legal fights against Trump's executive orders since his inauguration in 2025. 
+**Goal:** Capture and track lawsuits associated with Trump's executive orders since his inauguration in 2025. 
 
 ## Lo-fi website mockup
 
