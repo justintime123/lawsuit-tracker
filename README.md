@@ -6,7 +6,7 @@
 
 ## Lo-fi website mockup
 
-![Website Lo-fi Mockup (1)](https://github.com/user-attachments/assets/ef13b7d8-4797-43f5-ad09-6c84c7710d7a)
+<img width="2327" height="1073" alt="Website Lo-fi Mockup" src="https://github.com/user-attachments/assets/bacf8d4b-0a40-40c1-a620-70d70c3f2815" />
 
 
 ## Data
